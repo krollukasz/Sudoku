@@ -16,6 +16,8 @@ class App extends React.Component {
       board: "",
       gameInfo: "Powodzenia"
     };
+    this.startGame = this.startGame.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   toggleModal() {
@@ -39,6 +41,37 @@ class App extends React.Component {
     this.setState({ board: this.state.initialBoard, gameInfo: "Powodzenia" });
   }
 
+  handleChange(event, index) {
+    // console.log(index);
+
+    if (event.target.value > 0 && event.target.value <= 9) {
+      let newBoard = this.state.board.split("").map((i) => {
+        if (i == index) {
+          this.setState({ board: event.target.value }) 
+        }
+      });
+      this.setState({ board: newBoard })
+  }
+
+
+
+    // return(e) => {
+    //   const newBoard = this.state.board.slice();
+    //   newBoard(tile) = e.target.value;
+    //   this.setState{( newBoard )};
+    // }
+  }
+
+  check() {
+    const solve = sudoku.solve(this.state.board);
+    if (this.state.board == solve) {
+      this.state({gameInfo: "Wszystko idzie w dobrą stronę"})
+    }
+    else {
+      this.state({gameInfo: "Coś poszło nie tak"})
+    }
+  }
+
   solveTheGame() {
     const solve = sudoku.solve(this.state.initialBoard);
     if (solve) {
@@ -52,7 +85,7 @@ class App extends React.Component {
         <h1>Sudoku</h1>
         <Modal
           show={this.state.openModal}
-          action={this.startGame.bind(this)}
+          action={this.startGame}
         />
         <Result 
           className={this.state.resultClassName} // S P R A W D Z I Ć   &   P O P R A W I Ć
@@ -61,7 +94,7 @@ class App extends React.Component {
         <Board
           initialBoard = {this.state.initialBoard}
           board = {this.state.board}
-          handleChange = {this.handleChange.bind(this)}
+          handleChange = {this.handleChange}
         />
         <div className={style.buttons}>
           <button onClick = {() => this.toggleModal()}>Nowa gra</button>

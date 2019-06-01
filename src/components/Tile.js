@@ -8,7 +8,7 @@ const Tile = props => {
       max = "9"
       className = {props.className}
       value = {props.value}
-      onChange = {props.handleChange}
+      onChange = {(event) => props.handleChange(event.target.value)}
       disabled = {props.disabled}
     />
   );
