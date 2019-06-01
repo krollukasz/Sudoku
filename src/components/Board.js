@@ -16,7 +16,8 @@ const Board = props => {
         value={number === "." ? "" : number}
         // zablokowanie edycji komórki
         disabled={number === initialBoardSplit[index] && number != "." ? true : false}
-        handleChange={event => props.handleChange(index, event.target.value)}
+        handleChange={props.handleChange}
+        index={index}
       />
     );
   });
