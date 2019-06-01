@@ -41,16 +41,19 @@ class App extends React.Component {
     this.setState({ board: this.state.initialBoard, gameInfo: "Powodzenia" });
   }
 
-  handleChange(event, index) {
-    // console.log(index);
+  handleChange(value, index) {
+    console.log('->', value, index);
 
-    if (event.target.value > 0 && event.target.value <= 9) {
-      let newBoard = this.state.board.split("").map((i) => {
+    if (value > 0 && value <= 9) {
+      let newBoard = this.state.board.split("").map((val, i) => {
         if (i == index) {
-          this.setState({ board: event.target.value }) 
+          return value;
         }
+
+        return val;
       });
-      this.setState({ board: newBoard })
+
+      this.setState({ board: newBoard.join('') })
   }
 
 
