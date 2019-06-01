@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  margin: 5px 0;
+}
+
+.board {
+  max-width: 650px;
+  max-height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.buttons button {
+  margin: 10px;
+  width: 150px;
+  height: 40px;
+  background-color: #11b900;
+  font: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.buttons button:hover {
+  background-color: #10a500;
+}
+
+.tile {
+  margin: 0;
+  padding: 3% 0;
+  width: 11%;
+  background-color: #f3b32b;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+.tile:hover {
+  background-color: #4fff3b;
+  cursor: pointer;
+}
+
+.tileinit {
+  margin: 0;
+  padding: 3% 0;
+  width: 11%;
+  background-color: #ffffff;
+  color: #020C2E;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+.tileinit:disabled {
+  background: #fdedd0;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input:nth-child(3n) {
+  border-right: 3px solid #000000;
+}
+
+input:nth-child(9n + 1) {
+  border-left: 3px solid #000000;
+}
+
+input:nth-child(n + 73) {
+  border-bottom: 3px solid #000000;
+}
+
+input:nth-child(27n + 1),
+input:nth-child(27n + 2),
+input:nth-child(27n + 3),
+input:nth-child(27n + 4),
+input:nth-child(27n + 5),
+input:nth-child(27n + 6),
+input:nth-child(27n + 7),
+input:nth-child(27n + 8),
+input:nth-child(27n + 9) {
+  border-top: 3px solid #000000;
+}
+
+.overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  padding: 10px 25px 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  position: relative;
+}
