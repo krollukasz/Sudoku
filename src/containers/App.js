@@ -56,15 +56,7 @@ class App extends React.Component {
       });
 
       this.setState({ board: newBoard.join('') })
-  }
-
-
-
-    // return(e) => {
-    //   const newBoard = this.state.board.slice();
-    //   newBoard(tile) = e.target.value;
-    //   this.setState{( newBoard )};
-    // }
+    }
   }
 
   check() {
@@ -94,7 +86,7 @@ class App extends React.Component {
         />
         <Result 
           gameInfo={this.state.gameInfo}
-          className={this.state.gameInfoClassName} // S P R A W D Z I Ć   &   P O P R A W I Ć
+          className={this.state.gameInfoClassName}
         />
         <Board
           initialBoard = {this.state.initialBoard}

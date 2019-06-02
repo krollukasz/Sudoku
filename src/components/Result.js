@@ -2,7 +2,7 @@ import React from "react";
 
 const Result = props => {
   return(
-    <p className={props.className}>{props.result}</p>
+    <p className={props.className}>{props.gameInfo}</p>
   );
 };
 
