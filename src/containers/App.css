@@ -17,6 +17,12 @@ h1 {
   margin: 5px 0;
 }
 
+.gameInfoInit {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0052bd;
+}
+
 .board {
   max-width: 650px;
   max-height: 650px;
@@ -41,6 +47,7 @@ h1 {
   font-weight: bold;
   text-transform: uppercase;
   border: none;
+  border-radius: 6px;
   outline: none;
   cursor: pointer;
 }

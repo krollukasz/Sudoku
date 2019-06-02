@@ -14,7 +14,8 @@ class App extends React.Component {
       newGame: false,
       initialBoard: "",
       board: "",
-      gameInfo: "Powodzenia"
+      gameInfo: "Powodzenia",
+      gameInfoClassName: style.gameInfoInit
     };
     this.startGame = this.startGame.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -33,7 +34,8 @@ class App extends React.Component {
       newGame: true,
       board,
       initialBoard: board,
-      gameInfo: "Powodzenia"
+      gameInfo: "Powodzenia",
+      gameInfoClassName: style.gameInfoInit
     });
   }
 
@@ -42,7 +44,7 @@ class App extends React.Component {
   }
 
   handleChange(value, index) {
-    console.log('->', value, index);
+    // console.log('->', value, index);
 
     if (value > 0 && value <= 9) {
       let newBoard = this.state.board.split("").map((val, i) => {
@@ -78,7 +80,7 @@ class App extends React.Component {
   solveTheGame() {
     const solve = sudoku.solve(this.state.initialBoard);
     if (solve) {
-      this.state({board: solve})
+      this.setState({board: solve})
     }
   }
 
@@ -91,8 +93,8 @@ class App extends React.Component {
           action={this.startGame}
         />
         <Result 
-          className={this.state.resultClassName} // S P R A W D Z I Ć   &   P O P R A W I Ć
-          result={this.state.result}
+          gameInfo={this.state.gameInfo}
+          className={this.state.gameInfoClassName} // S P R A W D Z I Ć   &   P O P R A W I Ć
         />
         <Board
           initialBoard = {this.state.initialBoard}
@@ -101,6 +103,8 @@ class App extends React.Component {
         />
         <div className={style.buttons}>
           <button onClick = {() => this.toggleModal()}>Nowa gra</button>
+          {this.state.newGame ? <button onClick={() => this.solveTheGame()}>Pokaż rozwiązanie</button> : ''}
+          {this.state.newGame ? <button onClick={() => this.reset()}>Restart</button> : ''}
         </div>
       </div>
     );
