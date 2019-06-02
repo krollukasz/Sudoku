@@ -55,6 +55,21 @@ class App extends React.Component {
         return val;
       });
 
+      const checkResult = sudoku.solve(this.state.board);
+      if (!checkResult) {
+        this.setState({
+          gameInfo: "Ups... Coś jest nie tak"
+        });
+      } else if (checkResult && !this.state.board.includes(".")) {
+        this.setState ({
+          gameInfo: "Udało Ci się rozwiązać Sudoku !"
+        });
+      } else {
+        this.setState({
+          gameInfo: "Narazie wszystko w porządku"
+        });
+      }
+
       this.setState({ board: newBoard.join('') })
     }
   }
