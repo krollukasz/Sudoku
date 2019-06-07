@@ -55,32 +55,26 @@ class App extends React.Component {
         return val;
       });
 
-      const checkResult = sudoku.solve(this.state.board);
-      if (!checkResult) {
-        this.setState({
-          gameInfo: "Ups... Coś jest nie tak"
-        });
-      } else if (checkResult && !this.state.board.includes(".")) {
-        this.setState ({
-          gameInfo: "Udało Ci się rozwiązać Sudoku !"
-        });
-      } else {
-        this.setState({
-          gameInfo: "Narazie wszystko w porządku"
-        });
-      }
-
       this.setState({ board: newBoard.join('') })
     }
   }
 
   check() {
-    const solve = sudoku.solve(this.state.board);
-    if (this.state.board == solve) {
-      this.state({gameInfo: "Wszystko idzie w dobrą stronę"})
+    const solvedBoard = sudoku.solve(this.state.board);
+    if (solvedBoard && !this.state.board.includes(".")) {
+      this.setState({
+        gameInfo: "Udało Ci się rozwiązać Sudoku !"
+      });
+    }
+    else if (solvedBoard) {
+      this.setState({
+        gameInfo: "Wszystko idzie w dobrą stronę :)"
+      });
     }
     else {
-      this.state({gameInfo: "Coś poszło nie tak"})
+      this.setState({
+        gameInfo: "Ups... Coś poszło nie tak"
+      });
     }
   }
 
@@ -111,6 +105,7 @@ class App extends React.Component {
         <div className={style.buttons}>
           <button onClick = {() => this.toggleModal()}>Nowa gra</button>
           {this.state.newGame ? <button onClick={() => this.solveTheGame()}>Pokaż rozwiązanie</button> : ''}
+          {this.state.newGame ? <button onClick={() => this.check()}>Sprawdź</button> : ''}
           {this.state.newGame ? <button onClick={() => this.reset()}>Restart</button> : ''}
         </div>
       </div>
