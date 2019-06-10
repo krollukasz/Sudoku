@@ -44,12 +44,12 @@ class App extends React.Component {
   }
 
   handleChange(value, index) {
-    // console.log('->', value, index);
+    console.log('->', value, index);
 
     if (value > 0 && value <= 9) {
       let newBoard = this.state.board.split("").map((val, i) => {
         if (i == index) {
-          return value;
+          return Number(value);
         }
 
         return val;
