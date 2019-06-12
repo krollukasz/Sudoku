@@ -44,8 +44,8 @@ class App extends React.Component {
   }
 
   handleChange(value, index) {
-    console.log('->', value, typeof value);
-    let newValue;
+  // console.log('->', value, typeof value);
+    
     if (value > 0 && value <= 9) {
       let newBoard = this.state.board.split("").map((val, i) => {
         if (i == index) {
@@ -55,14 +55,18 @@ class App extends React.Component {
         return val;
       }) ;
 
-      this.setState({ board: newBoard.join('') })
+      this.setState({ board: newBoard.join('') });
     } 
     else if (value === "") {
-      newValue = ".";
-      // return this.setState.board;
-    }
-    else {
-      newValue = value;
+      let newBoard = this.state.board.split("").map((val, i) => {
+        if (i == index) {
+          return ".";
+        } 
+        
+        return val;
+      });
+
+      this.setState({ board: newBoard.join('') });
     }
   }
 
