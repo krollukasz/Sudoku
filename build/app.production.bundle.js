@@ -1095,9 +1095,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -1127,8 +1127,11 @@ var App =
       newGame: false,
       initialBoard: "",
       board: "",
-      gameInfo: "Powodzenia"
+      gameInfo: "Powodzenia",
+      gameInfoClassName: _App_css__WEBPACK_IMPORTED_MODULE_1___default.a.gameInfoInit
     };
+    _this.startGame = _this.startGame.bind(_assertThisInitialized(_this));
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -1148,7 +1151,8 @@ var App =
         newGame: true,
         board: board,
         initialBoard: board,
-        gameInfo: "Powodzenia"
+        gameInfo: "Powodzenia",
+        gameInfoClassName: _App_css__WEBPACK_IMPORTED_MODULE_1___default.a.gameInfoInit
       });
     }
   }, {
@@ -1160,17 +1164,50 @@ var App =
       });
     }
   }, {
+    key: "handleChange",
+    value: function handleChange(value, index) {
+      // console.log('->', value, typeof value);
+      if (value > 0 && value <= 9) {
+        var newBoard = this.state.board.split("").map((function (val, i) {
+          if (i == index) {
+            return Number(value);
+          }
+
+          return val;
+        }));
+        this.setState({
+          board: newBoard.join('')
+        });
+      } else if (value === "") {
+        var _newBoard = this.state.board.split("").map((function (val, i) {
+          if (i == index) {
+            return ".";
+          }
+
+          return val;
+        }));
+
+        this.setState({
+          board: _newBoard.join('')
+        });
+      }
+    }
+  }, {
     key: "check",
     value: function check() {
-      var solve = sudoku_umd__WEBPACK_IMPORTED_MODULE_5___default.a.solve(this.state.board);
+      var solvedBoard = sudoku_umd__WEBPACK_IMPORTED_MODULE_5___default.a.solve(this.state.board);
 
-      if (this.state.board == solve) {
-        this.state({
-          gameInfo: "Wszystko idzie w dobrą stronę"
+      if (solvedBoard && !this.state.board.includes(".")) {
+        this.setState({
+          gameInfo: "Udało Ci się rozwiązać Sudoku !"
+        });
+      } else if (solvedBoard) {
+        this.setState({
+          gameInfo: "Wszystko idzie w dobrą stronę :)"
         });
       } else {
-        this.state({
-          gameInfo: "Coś poszło nie tak"
+        this.setState({
+          gameInfo: "Ups... Coś poszło nie tak"
         });
       }
     }
@@ -1180,7 +1217,7 @@ var App =
       var solve = sudoku_umd__WEBPACK_IMPORTED_MODULE_5___default.a.solve(this.state.initialBoard);
 
       if (solve) {
-        this.state({
+        this.setState({
           board: solve
         });
       }
@@ -1194,22 +1231,33 @@ var App =
         className: _App_css__WEBPACK_IMPORTED_MODULE_1___default.a.container
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Sudoku"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Modal__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"], {
         show: this.state.openModal,
-        action: this.startGame.bind(this)
+        action: this.startGame
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Result__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"], {
-        className: this.state.resultClassName // S P R A W D Z I Ć   &   P O P R A W I Ć
-        ,
-        result: this.state.result
+        gameInfo: this.state.gameInfo,
+        className: this.state.gameInfoClassName
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Board__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], {
         initialBoard: this.state.initialBoard,
         board: this.state.board,
-        handleChange: this.handleChange.bind(this)
+        handleChange: this.handleChange
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: _App_css__WEBPACK_IMPORTED_MODULE_1___default.a.buttons
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         onClick: function onClick() {
           return _this2.toggleModal();
         }
-      }, "Nowa gra")));
+      }, "Nowa gra"), this.state.newGame ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this2.solveTheGame();
+        }
+      }, "Poka\u017C rozwi\u0105zanie") : '', this.state.newGame ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this2.check();
+        }
+      }, "Sprawd\u017A") : '', this.state.newGame ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this2.reset();
+        }
+      }, "Restart") : ''));
     }
   }]);
 
@@ -1279,7 +1327,7 @@ var Modal = function Modal(props) {
 var Result = function Result(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
     className: props.className
-  }, props.result);
+  }, props.gameInfo);
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Result);
@@ -1317,7 +1365,9 @@ var Tile_Tile = function Tile(props) {
     max: "9",
     className: props.className,
     value: props.value,
-    onChange: props.handleChange,
+    onChange: function onChange(event) {
+      return props.handleChange(event.target.value, props.index);
+    },
     disabled: props.disabled
   });
 };
@@ -1344,9 +1394,8 @@ var Board_Board = function Board(props) {
       value: number === "." ? "" : number // zablokowanie edycji komórki
       ,
       disabled: number === initialBoardSplit[index] && number != "." ? true : false,
-      handleChange: function handleChange(event) {
-        return props.handleChange(index, event.target.value);
-      }
+      handleChange: props.handleChange,
+      index: index
     });
   }));
   return react_default.a.createElement("div", {
@@ -8592,12 +8641,16 @@ module.exports = function (originalModule) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(18)(false);
+// Imports
+exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Lato:400,700&display=swap);", ""]);
+
 // Module
-exports.push([module.i, "* {\r\n  box-sizing: border-box;\r\n}\r\n\r\n._3_D7WnxjeofK7xR1C1DkYz {\r\n  display: flex;\r\n  flex-direction: column;\r\n  flex-wrap: nowrap;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n\r\nh1 {\r\n  margin: 5px 0;\r\n}\r\n\r\n._2-2aH6F2P0BC9hOwSj-fn3 {\r\n  max-width: 750px;\r\n  max-height: 750px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-wrap: wrap;\r\n}\r\n\r\n._3sw8B4zzSj-wNR7qPRAU4m {\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\r\n}\r\n\r\n._3sw8B4zzSj-wNR7qPRAU4m button {\r\n  margin: 10px;\r\n  width: 150px;\r\n  height: 40px;\r\n  background-color: #11b900;\r\n  font: #ffffff;\r\n  font-weight: bold;\r\n  text-transform: uppercase;\r\n  border: none;\r\n  outline: none;\r\n  cursor: pointer;\r\n  /* background: #F3E12B; */\r\n}\r\n\r\n._3sw8B4zzSj-wNR7qPRAU4m button:hover {\r\n  background-color: #0A6301;\r\n}\r\n\r\n._3zrpor0itUIfTFzUT8JZIt {\r\n  margin: 0;\r\n  padding: 3% 0;\r\n  width: 11%;\r\n  background-color: #F3B32B;\r\n  font-size: 1rem;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  border: 1px solid #000000;\r\n}\r\n\r\n._3zrpor0itUIfTFzUT8JZIt:hover {\r\n  background-color: #F3DE05;  \r\n}\r\n\r\n.RDzRDKYJJXA0wkCmtI_o_ {\r\n  margin: 0;\r\n  padding: 3% 0;\r\n  width: 11%;\r\n  background-color: #ffffff;\r\n  color: #020C2E;\r\n  font-size: 1rem;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  border: 1px solid #000000;\r\n}\r\n\r\n.RDzRDKYJJXA0wkCmtI_o_:disabled {\r\n  background: #FDEDD0;\r\n}\r\n\r\n.poBKrx-2pXmJMjHVsLOnr {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  position: fixed;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  background: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n._3Qbjz03IJEBdud9_MvzTec {\r\n  padding: 10px 25px 25px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-flow: column;\r\n  background-color: #ffffff;\r\n  border-radius: 10px;\r\n  position: relative;\r\n}", ""]);
+exports.push([module.i, "* {\r\n  box-sizing: border-box;\r\n  font-family: \"Lato\", sans-serif;\r\n}\r\n\r\n._3_D7WnxjeofK7xR1C1DkYz {\r\n  display: flex;\r\n  flex-direction: column;\r\n  flex-wrap: nowrap;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n\r\nh1 {\r\n  margin: 5px 0;\r\n}\r\n\r\n._1cpqY9YLcgk1WaQUxT3qwx {\r\n  font-size: 18px;\r\n  font-weight: bold;\r\n  color: #0052bd;\r\n}\r\n\r\n._2-2aH6F2P0BC9hOwSj-fn3 {\r\n  max-width: 650px;\r\n  max-height: 650px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-wrap: wrap;\r\n}\r\n\r\n._3sw8B4zzSj-wNR7qPRAU4m {\r\n  display: flex;\r\n  justify-content: space-around;\r\n  align-items: center;\r\n}\r\n\r\n._3sw8B4zzSj-wNR7qPRAU4m button {\r\n  margin: 10px;\r\n  width: 150px;\r\n  height: 40px;\r\n  background-color: #11b900;\r\n  font: #ffffff;\r\n  font-weight: bold;\r\n  text-transform: uppercase;\r\n  border: none;\r\n  border-radius: 6px;\r\n  outline: none;\r\n  cursor: pointer;\r\n}\r\n\r\n._3sw8B4zzSj-wNR7qPRAU4m button:hover {\r\n  background-color: #10a500;\r\n}\r\n\r\n._3zrpor0itUIfTFzUT8JZIt {\r\n  margin: 0;\r\n  padding: 3% 0;\r\n  width: 11%;\r\n  background-color: #f3b32b;\r\n  font-size: 1rem;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  border: 1px solid #000000;\r\n}\r\n\r\n._3zrpor0itUIfTFzUT8JZIt:hover {\r\n  background-color: #4fff3b;\r\n  cursor: pointer;\r\n}\r\n\r\n.RDzRDKYJJXA0wkCmtI_o_ {\r\n  margin: 0;\r\n  padding: 3% 0;\r\n  width: 11%;\r\n  background-color: #ffffff;\r\n  color: #020C2E;\r\n  font-size: 1rem;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  border: 1px solid #000000;\r\n}\r\n\r\n.RDzRDKYJJXA0wkCmtI_o_:disabled {\r\n  background: #fdedd0;\r\n}\r\n\r\ninput[type='number']::-webkit-inner-spin-button,\r\ninput[type='number']::-webkit-outer-spin-button {\r\n  -webkit-appearance: none;\r\n  margin: 0;\r\n}\r\n\r\ninput[type='number'] {\r\n  -moz-appearance: textfield;\r\n}\r\n\r\ninput:nth-child(3n) {\r\n  border-right: 3px solid #000000;\r\n}\r\n\r\ninput:nth-child(9n + 1) {\r\n  border-left: 3px solid #000000;\r\n}\r\n\r\ninput:nth-child(n + 73) {\r\n  border-bottom: 3px solid #000000;\r\n}\r\n\r\ninput:nth-child(27n + 1),\r\ninput:nth-child(27n + 2),\r\ninput:nth-child(27n + 3),\r\ninput:nth-child(27n + 4),\r\ninput:nth-child(27n + 5),\r\ninput:nth-child(27n + 6),\r\ninput:nth-child(27n + 7),\r\ninput:nth-child(27n + 8),\r\ninput:nth-child(27n + 9) {\r\n  border-top: 3px solid #000000;\r\n}\r\n\r\n.poBKrx-2pXmJMjHVsLOnr {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  position: fixed;\r\n  top: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  left: 0;\r\n  background: rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n._3Qbjz03IJEBdud9_MvzTec {\r\n  padding: 10px 25px 25px;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-flow: column;\r\n  background-color: #ffffff;\r\n  border-radius: 10px;\r\n  position: relative;\r\n}", ""]);
 
 // Exports
 exports.locals = {
 	"container": "_3_D7WnxjeofK7xR1C1DkYz",
+	"gameInfoInit": "_1cpqY9YLcgk1WaQUxT3qwx",
 	"board": "_2-2aH6F2P0BC9hOwSj-fn3",
 	"buttons": "_3sw8B4zzSj-wNR7qPRAU4m",
 	"tile": "_3zrpor0itUIfTFzUT8JZIt",
