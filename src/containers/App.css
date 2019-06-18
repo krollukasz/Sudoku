@@ -36,6 +36,7 @@ h1 {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .buttons button {
@@ -136,11 +137,13 @@ input:nth-child(27n + 9) {
 
 .modal {
   padding: 10px 25px 25px;
+  width: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
   background-color: #ffffff;
+  text-align: center;
   border-radius: 10px;
   position: relative;
 }
